@@ -1,8 +1,28 @@
 import readlinesync = require("readline-sync");
 import { colors } from "./src/util/Colors";
+import { Moto } from "./src/model/Moto";
+import { MotoZero } from "./src/model/MotoZero";
+import { MotoUsada } from "./src/model/MotoUsada";
 
 export function main() {
-  let opcao;
+  let opcao: number;
+
+  //const moto: Moto = new Moto(1, "XRE", "Honda", 30000, 2024, 1);
+  //moto.visualizar();
+
+  const motoZero: MotoZero = new MotoZero(21, "GS", "BMW", 50000, 2025, 1, 12);
+  motoZero.visualizar();
+
+  /*const motousada: MotoUsada = new MotoUsada(
+    31,
+    "CB 500X",
+    "Honda",
+    20000,
+    2018,
+    2,
+    24
+  );
+  motousada.visualizar();*/
 
   do {
     chamarMenu();
@@ -85,7 +105,7 @@ function chamarMenu() {
   console.log("    ╠════════════════════════════════════════════════════╣");
   console.log("    ║          1 - Cadastrar Moto                        ║");
   console.log("    ║          2 - Listar todas as Motos                 ║");
-  console.log("    ║          3 - Consulta Moto por ID                  ║");
+  console.log("    ║          3 - Consultar Moto por ID                 ║");
   console.log("    ║          4 - Atualizar cadastro da Moto            ║");
   console.log("    ║          5 - Deletar cadastro da Moto              ║");
   console.log("    ║          0 - Sair                                  ║");
