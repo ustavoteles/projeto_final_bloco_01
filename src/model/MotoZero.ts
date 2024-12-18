@@ -1,3 +1,4 @@
+import { colors } from "../util/Colors";
 import { Moto } from "./Moto";
 
 export class MotoZero extends Moto {
@@ -38,10 +39,12 @@ export class MotoZero extends Moto {
     super.visualizar();
     let consorcio = this._valorTotalConsorcio / this.mesesConsorcio;
     console.log(
+      colors.fg.whitestrong,
       `Preço da Parcela da Moto (consórcio): ${new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
-      }).format(consorcio)} durante ${this.mesesConsorcio} meses`
+      }).format(consorcio)} durante ${this.mesesConsorcio} meses`,
+      colors.reset
     );
   }
 }

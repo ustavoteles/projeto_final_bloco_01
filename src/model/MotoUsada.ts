@@ -1,3 +1,4 @@
+import { colors } from "../util/Colors";
 import { Moto } from "./Moto";
 
 export class MotoUsada extends Moto {
@@ -15,8 +16,7 @@ export class MotoUsada extends Moto {
   ) {
     super(id, nome, marca, preco, ano, tipo);
     this._mesesFinanciamento = mesesFinanciamento;
-    this._valorTotalFinanciamento =
-      (preco * 0.01 * Math.pow(1 + 0.01, 24)) / Math.pow(1 + 0.01, 24) - 1;
+    this._valorTotalFinanciamento = preco;
   }
 
   public get mesesFinanciamento() {
@@ -28,9 +28,11 @@ export class MotoUsada extends Moto {
   }
 
   public set calcularFinanciamento(valor: number) {
-    this._valorTotalFinanciamento =
-      (valor * 0.01 * Math.pow(1 + 0.01, this.mesesFinanciamento)) /
-      (Math.pow(1 + 0.01, this.mesesFinanciamento) - 1);
+    const parcela =
+      (valor * 0.01 * Math.pow(1 + 0.01, this._mesesFinanciamento)) /
+      (Math.pow(1 + 0.01, this._mesesFinanciamento) - 1);
+
+    this._valorTotalFinanciamento = parcela * this.mesesFinanciamento;
   }
 
   public get ValorTotalFinanciamento(): number {
@@ -39,15 +41,18 @@ export class MotoUsada extends Moto {
 
   public visualizar(): void {
     super.visualizar();
-    let financiamento = this._valorTotalFinanciamento;
+
+    let parcela = this._valorTotalFinanciamento / this.mesesFinanciamento;
     console.log(
+      colors.fg.whitestrong,
       `Preço da Parcela da Moto (financiamento): ${new Intl.NumberFormat(
         "pt-BR",
         {
           style: "currency",
           currency: "BRL",
         }
-      ).format(financiamento)} durante ${this.mesesFinanciamento} meses`
+      ).format(parcela)} durante ${this.mesesFinanciamento} meses`,
+      colors.reset
     );
   }
 }

@@ -1,3 +1,5 @@
+import { colors } from "../util/Colors";
+
 export abstract class Moto {
   private _id: number;
   private _nome: string;
@@ -75,26 +77,29 @@ export abstract class Moto {
 
     switch (this._tipo) {
       case 1:
-        tipo = "Á Vista";
+        tipo = "Moto Usada";
         break;
+
       case 2:
-        tipo = "Consórcio";
+        tipo = "Moto Zero KMs";
         break;
+
       default:
         tipo = "MODELO INVÁLIDO";
     }
     console.log("\n\n================================");
-    console.log("Dados da Moto");
+    console.log(colors.fg.whitestrong, "         Dados da Moto", colors.reset);
     console.log("================================");
     console.log(`Id da Moto: ${this._id}`);
     console.log(`Modelo da Moto: ${this._nome}`);
     console.log(`Ano da Moto: ${this._ano}`);
     console.log(`${tipo}`);
     console.log(
-      `Valor da Moto: ${new Intl.NumberFormat("pt-BR", {
+      `Valor da Moto á Vista: ${new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
       }).format(this.preco)} `
     );
+    console.log("================================\n");
   }
 }

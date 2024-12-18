@@ -1,17 +1,43 @@
 import readlinesync = require("readline-sync");
 import { colors } from "./src/util/Colors";
-import { Moto } from "./src/model/Moto";
 import { MotoZero } from "./src/model/MotoZero";
 import { MotoUsada } from "./src/model/MotoUsada";
+import { MotoController } from "./src/controller/MotoController";
 
 export function main() {
-  let opcao: number;
+  let motos: MotoController = new MotoController();
 
-  //const moto: Moto = new Moto(1, "XRE", "Honda", 30000, 2024, 1);
-  //moto.visualizar();
+  let nomeModelo, nomeMarca: string;
+  let opcao,
+    precoMoto,
+    anoMoto,
+    tipo,
+    consorcioMoto,
+    idMoto,
+    mesesFinanciamento: number;
+  const tiposKMS = ["Usada", "ZeroKM"];
 
-  const motoZero: MotoZero = new MotoZero(21, "GS", "BMW", 50000, 2025, 1, 12);
-  motoZero.visualizar();
+  let motoZero1 = new MotoZero(
+    motos.gerarID(),
+    "Ninja 400",
+    "Kawasaki",
+    50000,
+    (anoMoto = 2025),
+    2,
+    12
+  );
+  motos.criarMoto(motoZero1);
+
+  let motoUsada1 = new MotoUsada(
+    motos.gerarID(),
+    "CB 500X",
+    "Honda",
+    20000,
+    (anoMoto = 2025),
+    1,
+    24
+  );
+  motos.criarMoto(motoUsada1);
 
   /*const motousada: MotoUsada = new MotoUsada(
     31,
@@ -47,6 +73,56 @@ export function main() {
           colors.reset
         );
 
+        console.log("Digite o modelo da moto: ");
+        nomeModelo = readlinesync.question("");
+
+        console.log("Digite a marca da moto: ");
+        nomeMarca = readlinesync.question("");
+
+        console.log("Digite a o preço da moto: ");
+        precoMoto = readlinesync.questionFloat("");
+
+        console.log("Moto USADA OU ZERO KMS?");
+        tipo = readlinesync.keyInSelect(tiposKMS, "", { cancel: false }) + 1;
+
+        switch (tipo) {
+          case 1:
+            console.log("Digite o ANO da moto:");
+            anoMoto = readlinesync.questionInt("");
+
+            console.log("Quantos Meses de Financiamento você deseja fazer: ");
+            mesesFinanciamento = readlinesync.questionInt("");
+
+            motos.criarMoto(
+              new MotoUsada(
+                motos.gerarID(),
+                nomeModelo,
+                nomeMarca,
+                precoMoto,
+                anoMoto,
+                tipo,
+                mesesFinanciamento
+              )
+            );
+            break;
+
+          case 2:
+            console.log("Digite quantos meses de consórcio você deseja:");
+            consorcioMoto = readlinesync.questionInt("");
+
+            motos.criarMoto(
+              new MotoZero(
+                motos.gerarID(),
+                nomeModelo,
+                nomeMarca,
+                precoMoto,
+                (anoMoto = 2025),
+                tipo,
+                consorcioMoto
+              )
+            );
+            break;
+        }
         keyPress();
         break;
 
@@ -56,6 +132,8 @@ export function main() {
           "\n\nListar todas as Motos\n\n",
           colors.reset
         );
+
+        motos.listarTodasAsMotos();
 
         keyPress();
         break;
@@ -67,6 +145,11 @@ export function main() {
           colors.reset
         );
 
+        console.log("Digite o ID da Moto: ");
+        idMoto = readlinesync.questionInt("");
+
+        motos.consultarMotoPorID(idMoto);
+
         keyPress();
         break;
 
@@ -77,6 +160,68 @@ export function main() {
           colors.reset
         );
 
+        console.log("Digite o ID da Moto: ");
+        idMoto = readlinesync.questionInt("");
+        motos.consultarMotoPorID(idMoto);
+
+        let moto = motos.buscarNoArray(idMoto);
+        console.log("\n =============================");
+        if (moto != null) {
+          console.log("Digite o nome do modelo da moto: ");
+          nomeModelo = readlinesync.question("");
+
+          console.log("Digite a marca da moto: ");
+          nomeMarca = readlinesync.question("");
+
+          console.log("Digite a o preço da moto: ");
+          precoMoto = readlinesync.questionFloat("");
+
+          tipo = moto.tipo;
+
+          switch (tipo) {
+            case 1:
+              console.log("Digite o ANO da moto:");
+              anoMoto = readlinesync.questionInt("");
+              console.log("Digite a quantidade parcelas em (meses): ");
+              mesesFinanciamento = readlinesync.questionInt("");
+
+              motos.atualizarMoto(
+                new MotoUsada(
+                  motos.gerarID(),
+                  nomeModelo,
+                  nomeMarca,
+                  precoMoto,
+                  anoMoto,
+                  tipo,
+                  mesesFinanciamento
+                )
+              );
+              break;
+
+            case 2:
+              console.log("Digite quantos meses de consórcio você deseja:");
+              consorcioMoto = readlinesync.questionInt("");
+
+              motos.atualizarMoto(
+                new MotoZero(
+                  motos.gerarID(),
+                  nomeModelo,
+                  nomeMarca,
+                  tipo,
+                  precoMoto,
+                  (anoMoto = 2025),
+                  consorcioMoto
+                )
+              );
+              break;
+          }
+        } else {
+          console.log(
+            colors.fg.red,
+            `\nA moto com o ID - ${idMoto} não foi encontrada!`,
+            colors.reset
+          );
+        }
         keyPress();
         break;
 
@@ -86,6 +231,11 @@ export function main() {
           "\n\nDeletar cadastro da Moto\n\n",
           colors.reset
         );
+
+        console.log("Digite o ID da Moto: ");
+        idMoto = readlinesync.questionInt("");
+
+        motos.deletarMoto(idMoto);
 
         keyPress();
         break;
