@@ -56,7 +56,12 @@ export function main() {
     opcao = readlinesync.questionInt("");
 
     if (opcao === 0) {
-      console.log(colors.fg.redstrong, "Obrigado Por usar o Motos Teles");
+      console.log(
+        colors.fg.redstrong,
+        "********************************************************g"
+      );
+
+      console.log(colors.fg.redstrong, "Obrigado Por usar o Teles Motos");
 
       about();
 
